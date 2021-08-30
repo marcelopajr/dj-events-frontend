@@ -1,5 +1,5 @@
 import { API_URL } from '@/config/index';
-import { FaPen, FaPencilAlt, FaTimes } from 'react-icons/fa';
+import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '@/components/Layout';
@@ -25,14 +25,14 @@ export default function EventPage({ event }) {
         </div>
 
         <span>
-          {event.date} at {event.time}
+          {new Date(event.date).toLocaleDateString('en-US')} at {event.time}
         </span>
         <h1>{event.name}</h1>
 
         {event.image && (
           <div className={styles.image}>
             <Image
-              src={event.image}
+              src={event.image.formats.medium.url}
               width={960}
               height={600}
               alt={event.name}
@@ -58,7 +58,7 @@ export default function EventPage({ event }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${API_URL}/api/events`);
+  const res = await fetch(`${API_URL}/events`);
   const events = await res.json();
 
   const paths = events.map((event) => ({ params: { slug: event.slug } }));
@@ -70,7 +70,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const res = await fetch(`${API_URL}/api/events/${slug}`);
+  const res = await fetch(`${API_URL}/events?slug=${slug}`);
   const events = await res.json();
 
   return {
