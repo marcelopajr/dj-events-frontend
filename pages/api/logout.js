@@ -15,7 +15,7 @@ export default async (req, res) => {
       }),
     );
 
-    res.statys(200).json({ message: 'Sucess' });
+    res.status(200).json({ message: 'Sucess' });
   } else {
     res.setHeader('Allow', ['POST']);
     res.status(405).json({ message: `Method ${req.method} not allowed` });
